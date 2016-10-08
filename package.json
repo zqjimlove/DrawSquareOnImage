@@ -1,0 +1,14 @@
+{
+    "name": "DrawSquareOnImage",
+    "version": "0.0.0",
+    "dependencies": {},
+    "devDependencies": {
+        "gulp": "*",
+        "gulp-autoprefixer": "*",
+        "gulp-changed": "*",
+        "gulp-clean": "*",
+        "gulp-uglify": "*",
+        "gulp-watch": "*",
+        "gulp-connect": "*"
+    }
+}
