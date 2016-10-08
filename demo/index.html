@@ -9,27 +9,113 @@
     <title></title>
     <link rel="stylesheet" href="http://cdn.staticfile.org/twitter-bootstrap/4.0.0-alpha.2/css/bootstrap.min.css">
     <style>
-    img {
+    .row img {
         max-width: 100%;
     }
     </style>
 </head>
 
-<body>
+<body style="padding:20px 0">
     <div class="container">
         <div class="row">
-            <div class="" style="margin-top:100px">
+            <div class="col-md-8">
                 <div class="draw-wrap">
                     <img id="test1" src="72.jpg" alt="">
                 </div>
             </div>
+            <div class="col-md-4">
+                <div class="form-inline">
+                    <div class="form-group">
+                        <label for="SquareId" class="sr-only">Password</label>
+                        <input type="text" class="form-control" id="SquareId" placeholder="SquareId">
+                    </div>
+                    <button type="submit" onclick="removeSquare()" class="btn btn-primary">删除</button>
+                    <button type="submit" onclick="drawSquareOnImage.clearSquare()" class="btn btn-danger">清空</button>
+                </div>
+                <div id="eventList">
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-2">
+                <div class="draw-wrap">
+                    <img id="test2" src="72.jpg" alt="">
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="draw-wrap">
+                    <img id="test3" src="72.jpg" alt="" />
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="draw-wrap">
+                    <img id="test4" src="72.jpg" alt="" />
+                </div>
+            </div>
+        </div>
+    </div>
+    <div style="margin: 100px 0 0">
+        <h1>原图比列</h1>
+        <div style="position: relative;">
+            <img id="orignImage" src="72.jpg" alt="">
         </div>
     </div>
     <script src="http://cdn.staticfile.org/jquery/2.2.1/jquery.min.js"></script>
     <script src="DrawSquareOnImage.js"></script>
     <script>
-    var test = new DrawSquareOnImage();
-    test.renderer('test1')
+    var eventListEl = document.getElementById('eventList');
+    var orignImageParentEl = document.getElementById('orignImage').parentElement;
+    var drawSquareOnImage = new DrawSquareOnImage({
+        penSize: 1,
+        penColor: 'blue',
+        renderer: 'test1'
+    });
+
+    var smallI = new DrawSquareOnImage({
+            penSize: 1,
+            penColor: 'green',
+            renderer: 'test2'
+        }),
+        smallI2 = new DrawSquareOnImage({
+            penSize: 1,
+            penColor: 'yellow',
+            renderer: 'test3'
+        }),
+        smallI3 = new DrawSquareOnImage({
+            penSize: 1,
+            penColor: '#666',
+            renderer: 'test4'
+        });
+
+    drawSquareOnImage.on('addSquare', function(data) {
+        smallI.addSquare(data);
+        smallI2.addSquare(data);
+        smallI3.addSquare(data);
+        var p = document.createElement('p');
+        p.innerText = 'Create SquareId:' + data.id + ' Square, X:' + data.x +
+            ' Y:' + data.y + ', Square size ' + data.width + ':' + data.height;
+        eventListEl.appendChild(p);
+
+        var orignSquareDiv = document.createElement('div');
+        orignSquareDiv.style.position = 'absolute';
+        orignSquareDiv.style.left = data.x + 'px';
+        orignSquareDiv.style.top = data.y + 'px';
+        orignSquareDiv.style.width = data.width + 'px';
+        orignSquareDiv.style.height = data.height + 'px';
+        orignSquareDiv.style.border = '2px solid red';
+        orignImageParentEl.appendChild(orignSquareDiv);
+    })
+    drawSquareOnImage.renderer();
+    smallI.renderer();
+    smallI2.renderer();
+    smallI3.renderer();
+
+
+    function removeSquare() {
+        var id = document.getElementById('SquareId').value;
+        drawSquareOnImage.removeSquare(+id)
+        document.getElementById('SquareId').value = '';
+    }
     </script>
 </body>
 
