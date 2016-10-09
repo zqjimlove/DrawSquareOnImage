@@ -54,10 +54,14 @@
         }
         this.options = _classExtend(defaultOptions, options)
         this.squareIdQueue = 1;
+        this.canDraw = false;
+        this._squareMap = [];
+        this._eventMap = {};
+        this._renderer();
     }
 
     _classExtend(DrawSquareOnImage.prototype, {
-        renderer: function() {
+        _renderer: function() {
             var targetId = this.options.renderer,
                 imageElement = doc.getElementById(targetId),
                 parentElement = imageElement.parentElement,
@@ -87,9 +91,6 @@
             this.eWidth = eWidth;
             this.eHeight = eHeight;
         },
-        rendererSquareData: function() {
-
-        },
         bindEvent: function(el) {
             var _self = this,
                 tempSquareDiv,
@@ -101,6 +102,7 @@
             el.parentElement.addEventListener('mousedown', function(e) {
                 e.preventDefault();
                 e.stopPropagation();
+                if (_self.drawing || !_self.canDraw) return;
                 _self.drawing = true;
                 startX = e.pageX - eX;
                 startY = e.pageY - eY;
@@ -125,6 +127,19 @@
                 }
             });
         },
+        startDraw: function() {
+            this.canDraw = true;
+            this.parentElement.style.cursor = 'crosshair';
+        },
+        stopDraw: function() {
+            this.canDraw = false;
+            this.parentElement.style.cursor = 'auto';
+        },
+        addSquares: function(datas) {
+            for (var i = datas.length - 1; i >= 0; i--) {
+                this.addSquare(datas[i]);
+            }
+        },
         addSquare: function(data) {
             if (!this.readyStatus) {
                 var self = this;
@@ -137,6 +152,7 @@
             squareDiv.style.width = (data.width * this.scale) + 'px';
             squareDiv.style.height = (data.height * this.scale) + 'px';
             this.parentElement.appendChild(squareDiv);
+            this.fire('addSquare', this._getSquareData(squareDiv));
         },
         removeSquare: function(index) {
             var el = this._squareMap[index];
@@ -149,7 +165,6 @@
                 this.removeSquare(id);
             }
         },
-        _squareMap: {},
         _initSquare: function(x, y) {
             var squareDiv = document.createElement('div'),
                 _options = this.options;
@@ -247,7 +262,6 @@
             }
             return result;
         },
-        _eventMap: {},
         on: function(eventName, eventFn) {
 
             if (eventName === 'ready' && this.readyStatus) {

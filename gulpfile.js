@@ -26,3 +26,12 @@ gulp.task('serve', function() {
     });
 
 });
+
+gulp.task('clean', function() {
+    return gulp.src('dist').pipe(clean());
+})
+
+gulp.task('build', ['clean'], function() {
+
+    gulp.src('src/*.js').pipe(uglify()).pipe(gulp.dest('dist'));
+})
