@@ -91,6 +91,9 @@
             this.eWidth = eWidth;
             this.eHeight = eHeight;
         },
+        setOptions: function(options) {
+            this.options = _classExtend(this.options, options);
+        },
         bindEvent: function(el) {
             var _self = this,
                 tempSquareDiv,
