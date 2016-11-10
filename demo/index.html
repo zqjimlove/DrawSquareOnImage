@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="description" content="" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="renderer" content="webkit">
+    <title></title>
+    <link rel="stylesheet" href="http://cdn.staticfile.org/twitter-bootstrap/3.3.6/css/bootstrap.min.css" />
+    <style>
+        .row img {
+            max-width: 100%;
+        }
+    </style>
+</head>
+
+<body style="padding:20px 0">
+    <div class="container">
+        <div class="panel panel-primary">
+            <div class="panel-heading">操作区</div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-8">
+                        <div class="draw-wrap">
+                            <img id="test1" src="72.jpg" alt="">
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-inline">
+                            <div class="form-group">
+                                <label for="SquareId" class="sr-only">Password</label>
+                                <input type="text" class="form-control" id="SquareId" placeholder="SquareId">
+                            </div>
+                            <button type="button" onclick="removeGraph()" class="btn btn-primary">删除</button>
+                            <button type="button" onclick="t1.clearGraph()" class="btn btn-danger">清空</button>
+                        </div>
+                        <div style="margin-top: 10px" class="form-inline">
+                            <button type="button" onclick="t1.stop()" class="btn btn-primary">停止</button>
+                            <button type="button" onclick="t1.start()" class="btn btn-primary">开始</button>
+                        </div>
+                        <div style="margin-top: 10px" class="form-inline">
+                            <button type="button" onclick="shapeType = 1" class="btn btn-primary">矩形</button>
+                            <button type="button" onclick="shapeType = 2" class="btn btn-primary">圆形</button>
+                        </div>
+                        <div id="eventList" style="height:200px;overflow:auto;margin-top: 10px">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="panel panel-primary">
+            <div class="panel-heading">展示区</div>
+            <div class="panel-body">
+                <div class="row" style="margin-top:20px">
+                    <div class="col-md-2">
+                        <div class="draw-wrap">
+                            <img id="test2" src="72.jpg" alt="">
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="draw-wrap">
+                            <img id="test3" src="72.jpg" alt="" />
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="draw-wrap">
+                            <img id="test4" src="72.jpg" alt="" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="panel panel-primary">
+            <div class="panel-heading">展示区（原图）</div>
+            <div class="panel-body">
+                <div style="position: relative;"> <img id="orignImage" src="72.jpg" alt=""></div>
+            </div>
+        </div>
+    </div>
+    <script src="http://cdn.staticfile.org/jquery/2.2.1/jquery.min.js"></script>
+    <script src="DrawOnImage.js"></script>
+    <script>
+    var shapeType = 1;
+    var eventListEl = document.getElementById('eventList');
+    var orignImageParentEl = document.getElementById('orignImage').parentElement;
+       var t1 = new DrawOnImage({ target:'test1' }),
+        t2 = new DrawOnImage({ target:'test2',penColor:'blue' });
+        t3 = new DrawOnImage({ target:'test3',penColor:'yellow' }),
+        t4 = new DrawOnImage({ target:'test4',penColor:'green' });
+       t1.start();
+
+       t1.on('addedGraph', function(data) {
+        t2.addGraph(data);
+        t3.addGraph(data);
+        t4.addGraph(data);
+        var p = document.createElement('p');
+        p.innerText = 'Create SquareId:' + data.id + ' Square, X:' + data.x +
+            ' Y:' + data.y + ', Square size ' + data.w + ':' + data.h;
+        eventListEl.appendChild(p);
+
+        var orignSquareDiv = document.createElement('div');
+        orignSquareDiv.style.position = 'absolute';
+        orignSquareDiv.style.left = data.x + 'px';
+        orignSquareDiv.style.top = data.y + 'px';
+        orignSquareDiv.style.width = data.w + 'px';
+        orignSquareDiv.style.height = data.h + 'px';
+        orignSquareDiv.style.border = '2px solid red';
+        orignImageParentEl.appendChild(orignSquareDiv);
+    });
+
+
+    t1.on('drawing',function(data){
+       if(shapeType===2){
+           var node =data._node;
+           node.style.borderRadius = '100%';
+            if (node.offsetWidth > node.offsetHeight) {
+                node.style.height = node.style.width;
+            } else {
+                node.style.width = node.style.height;
+            }
+       }
+    })
+
+    t1.on('removeGraph',function(data){
+        t2.removeGraph(data.id);
+        t3.removeGraph(data.id);
+        t4.removeGraph(data.id);
+    })
+
+    function removeGraph(){
+        t1.removeGraph($('#SquareId').val())
+    }
+
+    </script>
+</body>
+
+</html>
