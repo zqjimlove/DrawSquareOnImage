@@ -1,4 +1,4 @@
-# DrawSquareOnImage
+# DrawGraphOnImage
 在图片上画线框，非canvas。
 
 ## 使用
@@ -11,48 +11,47 @@
 ```
 
 ```javascript
-var drawSquareOnImage = new DrawSquareOnImage({
+var drawOnImage = new DrawOnImage({
     penSize: 1, //线框大小
     penColor: 'blue', // 线框颜色
     penStyle:'solid', //线框样式（基于css border-style 的值）
-    renderer: 'test' // 图片的Id
+    target: 'test' // 图片的Id
 });
 ```
 
 ## API
 
-#### startDraw()
+#### start()
 
 开始绘画（默认未开始）
 
-#### stopDraw()
+#### stop()
 
 停止绘画
 
-#### addSquare(Object SquareData)
+#### addGraph(Object graphData)
 
-添加单个正方式
+添加单个图形
 ```javascript
 {
 	x:Number, //开始坐标x
 	y:Number, //开始坐标y
-	width:Number, 
-	height:Number, 
+	w:Number, 
+	h:Number, 
 }
 ```
 
-#### addSquares(Array SquareDatas)
+#### addGraphs(Array GraphDatas)
 
-添加多个正方形。
+添加多个图形数据。
 
+#### removeGraph(Number GraphId)
 
-#### removeSquare(Number squareId)
+删除某个图形
 
-删除某个正方形
+#### clearGraph()
 
-#### clearSquare()
-
-清空所有正方形
+清空所有图形
 
 #### on(String eventName,Function callback)
 
@@ -60,19 +59,22 @@ var drawSquareOnImage = new DrawSquareOnImage({
 
 ## Events
 
-#### addSquare
+#### createGraph 创建图形
+#### drawing 绘制过程，鼠标未松开
+#### addedGraph 添加图形，鼠标松开
+#### removeGraph 删除图形
 
-添加正方形
+事件对象
 
 ```javascript
 //callback Data
 {
 	x:Number, // 原图比例的坐标轴x
 	y:Number,// 原图比例的坐标轴y
-	widht:Number, // 原图比例的宽
-	height:Number, // 原图比例的高
-	id:Number,//当前square的Id
-	_node:Element,//正方形元素的实体,
+	w:Number, // 原图比例的宽
+	h:Number, // 原图比例的高
+	id:Number,//当前Graph的Id
+	_node:Element,//图形元素的实体,
 	draw:{  //当前绘图比例下的数据
 		scale:Float, // 绘图大小:原图大小，比率
 		x:Number, // 绘图比例的坐标轴x

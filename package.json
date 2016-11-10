@@ -1,14 +1,17 @@
 {
-    "name": "DrawSquareOnImage",
-    "version": "0.0.0",
-    "dependencies": {},
-    "devDependencies": {
-        "gulp": "*",
-        "gulp-autoprefixer": "*",
-        "gulp-changed": "*",
-        "gulp-clean": "*",
-        "gulp-uglify": "*",
-        "gulp-watch": "*",
-        "gulp-connect": "*"
-    }
+  "name": "DrawSquareOnImage",
+  "version": "0.0.1",
+  "dependencies": {},
+  "devDependencies": {
+    "gulp": "*",
+    "gulp-autoprefixer": "*",
+    "gulp-changed": "*",
+    "gulp-clean": "*",
+    "gulp-connect": "*",
+    "gulp-typescript": "*",
+    "gulp-uglify": "*",
+    "gulp-watch": "*",
+    "gulp-rename": "*",
+    "typescript": "^2.1.0-dev.20161108"
+  }
 }
